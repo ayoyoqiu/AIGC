@@ -172,7 +172,140 @@ function initApp() {
         </div>
         
         <div class="tools-container">
-          <p class="coming-soon">更多AI工具即将上线，敬请期待...</p>
+          <!-- 大模型工具 -->
+          <div class="tool-category">
+            <h3 class="category-title"><i class="fas fa-brain"></i> 大模型工具</h3>
+            <div class="tool-cards">
+              <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-robot"></i></div>
+                <h4>ChatGPT</h4>
+                <p>OpenAI的超强对话AI，支持文本、图像处理，可完成创意写作、编程、信息咨询等多种任务</p>
+                <a href="https://chatgpt.com/" class="tool-link" target="_blank">访问官网 <i class="fas fa-external-link-alt"></i></a>
+              </div>
+              
+              <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-comment-dots"></i></div>
+                <h4>Claude</h4>
+                <p>Anthropic公司旗舰大模型，擅长长文本理解、复杂推理，支持文档分析和创意内容生成</p>
+                <a href="https://claude.ai/login?returnTo=%2F%3F" class="tool-link" target="_blank">访问官网 <i class="fas fa-external-link-alt"></i></a>
+              </div>
+              
+              <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-rocket"></i></div>
+                <h4>DeepSeek</h4>
+                <p>国内顶尖大语言模型，提供强大知识库和工具插件支持，专为中文用户优化</p>
+                <a href="https://chat.deepseek.com/" class="tool-link" target="_blank">访问官网 <i class="fas fa-external-link-alt"></i></a>
+              </div>
+              
+              <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-comment-alt"></i></div>
+                <h4>Kimi</h4>
+                <p>主打中文理解和创作的AI对话助手，支持联网搜索和文档处理，对学术和专业内容支持良好</p>
+                <a href="https://www.kimi.com/" class="tool-link" target="_blank">访问官网 <i class="fas fa-external-link-alt"></i></a>
+              </div>
+              
+              <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-sparkles"></i></div>
+                <h4>Gemini</h4>
+                <p>Google的多模态人工智能，支持视频、图像和文本理解，强大的创意和分析能力</p>
+                <a href="https://gemini.google.com/u/0/app/7b4d696500847730?pli=1" class="tool-link" target="_blank">访问官网 <i class="fas fa-external-link-alt"></i></a>
+              </div>
+              
+              <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-robot"></i></div>
+                <h4>Grok</h4>
+                <p>xAI推出的交互式AI助手，实时联网能力强，支持多种信息处理并具有独特幽默感</p>
+                <a href="https://grok.com/" class="tool-link" target="_blank">访问官网 <i class="fas fa-external-link-alt"></i></a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- AI生成图像工具 -->
+          <div class="tool-category">
+            <h3 class="category-title"><i class="fas fa-image"></i> AI生成图像工具</h3>
+            <div class="tool-cards">
+              <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-paint-brush"></i></div>
+                <h4>即梦</h4>
+                <p>剪映推出的AI图像创作工具，国内顶尖生图产品，支持文本生成图像和图像编辑功能</p>
+                <a href="https://jimeng.jianying.com/ai-tool/home/" class="tool-link" target="_blank">访问官网 <i class="fas fa-external-link-alt"></i></a>
+              </div>
+              
+              <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+                <h4>可灵</h4>
+                <p>专业AI艺术创作平台，提供多种风格创作模板和一键生图，支持超高清图像输出</p>
+                <a href="https://app.klingai.com/cn/" class="tool-link" target="_blank">访问官网 <i class="fas fa-external-link-alt"></i></a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- AI办公工具 -->
+          <div class="tool-category">
+            <h3 class="category-title"><i class="fas fa-briefcase"></i> AI办公工具</h3>
+            <div class="tool-cards">
+              <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-file-alt"></i></div>
+                <h4>通义</h4>
+                <p>阿里巴巴推出的AI助手，能够帮助用户进行文档处理、信息检索和内容创作</p>
+                <a href="https://www.doubao.com/download/desktop?ug_apk_token=dkR31" class="tool-link" target="_blank">访问官网 <i class="fas fa-external-link-alt"></i></a>
+              </div>
+              
+              <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-file-word"></i></div>
+                <h4>WPS AI</h4>
+                <p>金山办公软件推出的智能办公助手，提供文档润色、自动排版和内容生成功能</p>
+                <a href="https://365.kdocs.cn/3rd/docer/solution/classify/382/396" class="tool-link" target="_blank">访问官网 <i class="fas fa-external-link-alt"></i></a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- AI智能体工具 -->
+          <div class="tool-category">
+            <h3 class="category-title"><i class="fas fa-robot"></i> AI智能体工具</h3>
+            <div class="tool-cards">
+              <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-cogs"></i></div>
+                <h4>Coze</h4>
+                <p>字节推出的低代码智能体开发平台，支持快速构建和部署各类智能体应用和机器人</p>
+                <a href="https://www.coze.cn/" class="tool-link" target="_blank">访问官网 <i class="fas fa-external-link-alt"></i></a>
+              </div>
+              
+              <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-project-diagram"></i></div>
+                <h4>Dify</h4>
+                <p>开源LLM应用开发平台，提供完整工具链支持创建、部署和监控AI应用和智能体</p>
+                <a href="https://dify.ai/" class="tool-link" target="_blank">访问官网 <i class="fas fa-external-link-alt"></i></a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- AI编程工具 -->
+          <div class="tool-category">
+            <h3 class="category-title"><i class="fas fa-code"></i> AI编程工具</h3>
+            <div class="tool-cards">
+              <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-wind"></i></div>
+                <h4>Windsurf</h4>
+                <p>智能代码编辑器，特别适合Web开发，提供实时代码建议和错误检测功能</p>
+                <a href="https://windsurf.com/editor" class="tool-link" target="_blank">访问官网 <i class="fas fa-external-link-alt"></i></a>
+              </div>
+              
+              <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-terminal"></i></div>
+                <h4>Cursor</h4>
+                <p>AI增强型代码编辑器，将大语言模型集成到开发环境中，大幅提升编码效率</p>
+                <a href="https://www.cursor.com/cn" class="tool-link" target="_blank">访问官网 <i class="fas fa-external-link-alt"></i></a>
+              </div>
+              
+              <div class="tool-card">
+                <div class="tool-icon"><i class="fas fa-code-branch"></i></div>
+                <h4>Trae</h4>
+                <p>专为中文开发者设计的AI编程助手，支持多种语言和框架，代码解释清晰详尽</p>
+                <a href="https://www.trae.com.cn/" class="tool-link" target="_blank">访问官网 <i class="fas fa-external-link-alt"></i></a>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
       
