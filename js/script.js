@@ -8,7 +8,7 @@ const videosData = [
   {
     id: 1,
     title: "AI实战第一课，从认知到效能提升",
-    description: "深入浅出的AI知识框架，帮助你建立对人工智能的系统认知。通过实际案例演示多款热门AI工具的应用场景，讲解如何将AI无缝融入日常工作流程，显著提升工作效率。适合希望快速掌握AI技能并实现个人效能突破的职场人士。",
+    description: "深入浅出的AI知识框架，帮助你建立对人工智能的系统认知。通过实际案例演示多款热门AI工具的应用场景，讲解如何将AI无缝融入日常工作流程，显著提升工作效率。适合希望快速掌握AI技能并实现个人效能突破的职场人士。密码：RFA8",
     date: "2025年5月26日",
     duration: "60分钟",
     audience: "青岛链家「早间“链”播」",
@@ -297,39 +297,74 @@ function initNavigation() {
 function renderVideos() {
   const videoContainer = document.getElementById('video-container');
   
+  // 先创建一个模态窗口容器
+  const modalContainer = document.createElement('div');
+  modalContainer.id = 'video-detail-modal';
+  modalContainer.className = 'video-modal';
+  modalContainer.innerHTML = `
+    <div class="video-modal-content">
+      <span class="close-video-modal">&times;</span>
+      <h2 id="modal-title"></h2>
+      <div class="modal-meta">
+        <div class="modal-date"><i class="fas fa-calendar"></i> <span id="modal-date"></span></div>
+        <div class="modal-duration"><i class="fas fa-clock"></i> <span id="modal-duration"></span></div>
+        <div class="modal-audience"><i class="fas fa-users"></i> <span id="modal-audience"></span></div>
+      </div>
+      <p id="modal-description"></p>
+      <div class="modal-actions">
+        <button id="modal-play-button" class="play-button">
+          <i class="fas fa-play-circle"></i>
+          观看视频
+        </button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modalContainer);
+  
+  // 添加关闭按钮事件
+  const closeBtn = document.querySelector('.close-video-modal');
+  closeBtn.addEventListener('click', function() {
+    modalContainer.classList.remove('active');
+  });
+  
+  // 点击模态窗口边缘关闭
+  modalContainer.addEventListener('click', function(event) {
+    if (event.target === modalContainer) {
+      modalContainer.classList.remove('active');
+    }
+  });
+  
   videosData.forEach(video => {
     const videoCard = document.createElement('div');
     videoCard.className = 'card';
+    
+    // 准备精简版描述（最多显示60个字符）
+    const shortDescription = video.description.length > 60 ? 
+      video.description.substring(0, 60) + '...' : video.description;
     
     // 准备卡片内容HTML
     let cardHTML = `
       <div class="card-date">${video.date}</div>
       <div class="card-content">
         <h3>${video.title}</h3>
-        <p>${video.description}</p>
+        <p class="short-description">${shortDescription}</p>
         <div class="info-container">
           <div class="duration">
-            <i class="fas fa-clock"></i> 时长: ${video.duration}
+            <i class="fas fa-clock"></i>${video.duration}
           </div>
-    `;
-    
-    // 添加受众信息（如果有）
-    if (video.audience) {
-      cardHTML += `
           <div class="audience">
-            <i class="fas fa-users"></i> 受众群体: ${video.audience}
+            <i class="fas fa-users"></i>${video.audience}
           </div>
-      `;
-    }
-    
-    cardHTML += `
         </div>
-    `;
-    
-    // 添加播放按钮
-    cardHTML += `
+      </div>
+      <div class="card-actions">
         <button class="play-button">
-          <i class="fas fa-play"></i> 观看回放
+          <i class="fas fa-play-circle"></i>
+          观看视频
+        </button>
+        <button class="detail-button">
+          <i class="fas fa-info-circle"></i>
+          查看详情
         </button>
       </div>
     `;
@@ -337,15 +372,58 @@ function renderVideos() {
     videoCard.innerHTML = cardHTML;
     videoContainer.appendChild(videoCard);
     
-    // 添加视频播放点击事件
+    // 添加整个卡片的点击事件，点击卡片显示详情
+    videoCard.addEventListener('click', function(event) {
+      // 如果点击的是播放按钮，不触发此事件
+      if (event.target.closest('.play-button')) {
+        return;
+      }
+      
+      // 设置模态窗口内容
+      document.getElementById('modal-title').textContent = video.title;
+      document.getElementById('modal-date').textContent = video.date;
+      document.getElementById('modal-duration').textContent = video.duration;
+      document.getElementById('modal-audience').textContent = video.audience;
+      document.getElementById('modal-description').textContent = video.description;
+      
+      // 显示模态窗口
+      modalContainer.classList.add('active');
+      
+      // 添加模态窗口中的观看按钮事件
+      document.getElementById('modal-play-button').onclick = function() {
+        if (video.link) {
+          window.open(video.link, '_blank');
+        } else {
+          alert(`播放视频: ${video.title}`);
+        }
+      };
+    });
+    
+    // 添加视频播放按钮点击事件
     const playButton = videoCard.querySelector('.play-button');
-    playButton.addEventListener('click', function() {
-      // 如果有链接，则打开链接，否则显示提示
+    playButton.addEventListener('click', function(event) {
+      event.stopPropagation(); // 阻止事件冒泡到卡片
       if (video.link) {
         window.open(video.link, '_blank');
       } else {
         alert(`播放视频: ${video.title}`);
       }
+    });
+    
+    // 添加详情按钮点击事件
+    const detailButton = videoCard.querySelector('.detail-button');
+    detailButton.addEventListener('click', function(event) {
+      event.stopPropagation(); // 阻止事件冒泡到卡片
+      
+      // 设置模态窗口内容
+      document.getElementById('modal-title').textContent = video.title;
+      document.getElementById('modal-date').textContent = video.date;
+      document.getElementById('modal-duration').textContent = video.duration;
+      document.getElementById('modal-audience').textContent = video.audience;
+      document.getElementById('modal-description').textContent = video.description;
+      
+      // 显示模态窗口
+      modalContainer.classList.add('active');
     });
   });
 }
