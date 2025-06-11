@@ -108,6 +108,9 @@ function initApp() {
             <span class="title-badge">精选</span>
           </div>
         </h1>
+        <div class="date-display">
+          <span id="current-date"></span>
+        </div>
       </header>
       
       <!-- 导航区域 -->
@@ -125,9 +128,6 @@ function initApp() {
           <a href="#contact" class="nav-item" data-section="contact">
             <i class="fas fa-envelope"></i>联系我
           </a>
-          <div class="nav-item date-display">
-            <span id="current-date"></span>
-          </div>
         </div>
       </nav>
     </div>
@@ -357,11 +357,11 @@ function renderVideos() {
           </div>
         </div>
       </div>
-      <div class="card-actions">
-        <button class="play-button">
+      <div class="actions">
+        <a href="#" class="play-button">
           <i class="fas fa-play-circle"></i>
           观看视频
-        </button>
+        </a>
         <button class="detail-button">
           <i class="fas fa-info-circle"></i>
           查看详情
@@ -401,11 +401,11 @@ function renderVideos() {
     
     // 添加视频播放按钮点击事件
     const playButton = videoCard.querySelector('.play-button');
+    playButton.setAttribute('href', video.link || '#');
     playButton.addEventListener('click', function(event) {
       event.stopPropagation(); // 阻止事件冒泡到卡片
-      if (video.link) {
-        window.open(video.link, '_blank');
-      } else {
+      if (!video.link) {
+        event.preventDefault();
         alert(`播放视频: ${video.title}`);
       }
     });
@@ -431,15 +431,24 @@ function renderVideos() {
 // 更新实时日期和时间的函数
 function updateCurrentDate() {
   const now = new Date();
-  const dateOptions = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
-  const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+  const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+  const weekday = weekdays[now.getDay()];
   
-  const dateStr = now.toLocaleDateString('zh-CN', dateOptions);
-  const timeStr = now.toLocaleTimeString('zh-CN', timeOptions);
+  const year = now.getFullYear();
+  const month = (now.getMonth() + 1).toString().padStart(2, '0');
+  const day = now.getDate().toString().padStart(2, '0');
+  const hours = now.getHours().toString().padStart(2, '0');
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  const seconds = now.getSeconds().toString().padStart(2, '0');
   
   const dateElement = document.getElementById('current-date');
   if (dateElement) {
-    dateElement.innerHTML = `${dateStr} ${timeStr}`;
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile) {
+      dateElement.innerHTML = `${year}-${month}-${day} ${hours}:${minutes}`;
+    } else {
+      dateElement.innerHTML = `${year}-${month}-${day} 星期${weekday} ${hours}:${minutes}:${seconds}`;
+    }
   }
 }
 
