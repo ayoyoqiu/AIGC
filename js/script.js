@@ -43,7 +43,7 @@ const videosData = [
   },
   {
     id: 5,
-    title: "AI工作坊，绘画小能手揭秘",
+    title: "AI工作坊，绘画小能手揭秘分享",
     description: "绘画小能手是如何制作的，手把手教你打造用于工作场景的AI机器人　1.0版绘画小能手提示词揭秘，贝壳闹海、链家经纪人形象提示词优化等。绘画小能手提示词+工作流组合。",
     date: "2024年7月31日",
     duration: "60分钟",
@@ -112,7 +112,7 @@ function initApp() {
       
       <!-- 导航区域 -->
       <nav class="nav-wrapper">
-        <div class="nav container">
+        <div class="nav nav-container">
           <a href="#share" class="nav-item" data-section="share">
             <i class="fas fa-play-circle"></i>往期分享
           </a>
@@ -126,7 +126,7 @@ function initApp() {
             <i class="fas fa-envelope"></i>联系我
           </a>
           <div class="nav-item date-display">
-            <i class="fas fa-calendar-alt"></i><span id="current-date"></span>
+            <span id="current-date"></span>
           </div>
         </div>
       </nav>
@@ -506,9 +506,54 @@ function initNewsboy() {
 function renderCourses() {
   const courseContainer = document.getElementById('course-container');
   
+  // 先创建一个模态窗口容器
+  if (!document.getElementById('course-detail-modal')) {
+    const modalContainer = document.createElement('div');
+    modalContainer.id = 'course-detail-modal';
+    modalContainer.className = 'course-modal';
+    modalContainer.innerHTML = `
+      <div class="course-modal-content">
+        <span class="close-course-modal">&times;</span>
+        <div class="modal-header">
+          <h2 id="course-modal-title"></h2>
+          <div class="course-status" id="course-modal-status"></div>
+        </div>
+        <div class="modal-meta">
+          <div class="modal-date"><i class="fas fa-calendar-alt"></i> <span id="course-modal-date"></span></div>
+          <div class="modal-difficulty" id="course-modal-difficulty"></div>
+        </div>
+        <div class="modal-tools" id="course-modal-tools"></div>
+        <p id="course-modal-description"></p>
+        <div class="modal-actions">
+          <a id="course-modal-link" class="entry-button" target="_blank">
+            进入学习 <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modalContainer);
+    
+    // 添加关闭按钮事件
+    const closeBtn = document.querySelector('.close-course-modal');
+    closeBtn.addEventListener('click', function() {
+      modalContainer.classList.remove('active');
+    });
+    
+    // 点击模态窗口边缘关闭
+    modalContainer.addEventListener('click', function(event) {
+      if (event.target === modalContainer) {
+        modalContainer.classList.remove('active');
+      }
+    });
+  }
+  
   coursesData.forEach(course => {
     const courseCard = document.createElement('div');
     courseCard.className = 'course-card';
+    
+    // 准备简短描述（最多80个字符）
+    const shortDescription = course.description.length > 80 ? 
+      course.description.substring(0, 80) + '...' : course.description;
     
     // 准备卡片HTML
     let cardHTML = `
@@ -532,11 +577,15 @@ function renderCourses() {
         <div class="tools-used">
           <i class="fas fa-tools"></i> 工具: ${course.tools}
         </div>
-        <p class="description">${course.description}</p>
+        <p class="description short-description">${shortDescription}</p>
         <div class="actions">
           <a href="${course.link}" class="entry-button" target="_blank">
             进入学习 <i class="fas fa-arrow-right"></i>
           </a>
+          <button class="detail-button">
+            <i class="fas fa-info-circle"></i>
+            查看详情
+          </button>
         </div>
       `;
     } else { // 进行中的课程
@@ -549,17 +598,81 @@ function renderCourses() {
           <div class="tag"><i class="fas fa-clock"></i> ${course.duration}</div>
           <div class="tag"><i class="fas fa-signal"></i> ${course.level}</div>
         </div>
-        <p class="description">${course.description}</p>
+        <p class="description short-description">${shortDescription}</p>
         <div class="actions">
           <a href="#" class="entry-button">
             进入学习 <i class="fas fa-arrow-right"></i>
           </a>
+          <button class="detail-button">
+            <i class="fas fa-info-circle"></i>
+            查看详情
+          </button>
         </div>
       `;
     }
     
     courseCard.innerHTML = cardHTML;
     courseContainer.appendChild(courseCard);
+    
+    // 添加卡片点击事件
+    courseCard.addEventListener('click', function(event) {
+      // 如果点击的是进入学习按钮，则不触发此事件
+      if (event.target.closest('.entry-button')) {
+        return;
+      }
+      
+      showCourseDetails(course);
+    });
+    
+    // 添加详情按钮点击事件
+    const detailButton = courseCard.querySelector('.detail-button');
+    detailButton.addEventListener('click', function(event) {
+      event.stopPropagation(); // 阻止事件冒泡到卡片
+      showCourseDetails(course);
+    });
   });
+  
+  // 显示课程详情的函数
+  function showCourseDetails(course) {
+    const modalContainer = document.getElementById('course-detail-modal');
+    const modalTitle = document.getElementById('course-modal-title');
+    const modalStatus = document.getElementById('course-modal-status');
+    const modalDate = document.getElementById('course-modal-date');
+    const modalDifficulty = document.getElementById('course-modal-difficulty');
+    const modalTools = document.getElementById('course-modal-tools');
+    const modalDescription = document.getElementById('course-modal-description');
+    const modalLink = document.getElementById('course-modal-link');
+    
+    // 设置模态窗口内容
+    modalTitle.textContent = course.title;
+    modalStatus.textContent = course.status;
+    modalStatus.className = `course-status ${course.status === '已完结' ? 'completed' : ''}`;
+    
+    if (course.difficulty !== undefined) { // 已完结的实践项目
+      // 显示难度星级
+      let difficultyStars = '';
+      for (let i = 0; i < course.difficulty; i++) {
+        difficultyStars += '<i class="fas fa-star"></i>';
+      }
+      
+      modalDate.textContent = course.updateDate;
+      modalDifficulty.innerHTML = `难度系数: ${difficultyStars}`;
+      modalTools.innerHTML = `<i class="fas fa-tools"></i> 工具: ${course.tools}`;
+    } else { // 进行中的课程
+      modalDate.textContent = ''; // 可能没有日期
+      modalDifficulty.innerHTML = '';
+      if (course.level) {
+        modalTools.innerHTML = `<div class="tag"><i class="fas fa-signal"></i> ${course.level}</div>`;
+      } else {
+        modalTools.innerHTML = '';
+      }
+    }
+    
+    modalDescription.textContent = course.description;
+    modalLink.href = course.link || '#';
+    
+    // 显示模态窗口
+    modalContainer.classList.add('active');
+  }
 }
 
